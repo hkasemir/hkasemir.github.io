@@ -56,12 +56,15 @@ function checkWin(board){
         if (checkDirection(board, pos, DIRECTIONS[dir])){
           var winner = document.getElementById('gamestatus')
           var winCells = checkDirection(board, pos, DIRECTIONS[dir]);
+          var color = null;
           winCells.forEach(function(cell){
             var id = "r" + cell[0] + "c" + cell[1];
             var winBox = document.getElementById(id);
+            if(winBox.className == "col x"){color = "Black";}
+            else {color = "Red";}
             winBox.className += ' winner';
           });
-          winner.innerHTML = 'WINNER!';
+          winner.innerHTML = color + ' is the Winner!';
           winner.style.visibility = 'visible';
           return true
         }
