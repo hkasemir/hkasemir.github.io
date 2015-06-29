@@ -141,7 +141,7 @@ var createGame = function() {
   var size = boardSizeSelector.value;
   
   var refreshButton = document.getElementById('refresh');
-  refreshButton.addEventListener('click', refreshBoard);
+  refreshButton.addEventListener('click', refreshBoard(size));
   
   
   boardSizeSelector.addEventListener('change', function(){
