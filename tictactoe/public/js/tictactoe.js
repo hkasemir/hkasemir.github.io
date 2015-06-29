@@ -1,6 +1,6 @@
 
 
-var tttBoard, clicks=0;
+var tttBoard, clicks=0, size = 3;
 var DIRECTIONS = [
     [0, 1],      // Check to the right
     [1, 0],      // Check down the column
@@ -127,29 +127,29 @@ function clickToBoard(boxId){
   box.removeEventListener("click", makeMove);
 }
 
-function refreshBoard(bSize){
+function refreshBoard(){
   document.getElementById('gamestatus').style.visibility = 'hidden';
   var gameboard = document.getElementById("gameboard");
   gameboard.innerHTML = '';
-  tttBoard = createBoard(bSize);
+  var boardSizeSelector = document.getElementById("boardsize");
+  var size = boardSizeSelector.value;
+  tttBoard = createBoard(size);
   drawBoard(tttBoard);
 }
 
 var createGame = function() {
 
-  var boardSizeSelector = document.getElementById("boardsize");
-  var size = boardSizeSelector.value;
-  
   var refreshButton = document.getElementById('refresh');
-  refreshButton.addEventListener('click', refreshBoard(size));
+  refreshButton.addEventListener('click', refreshBoard);
   
   
+  var boardSizeSelector = document.getElementById("boardsize");
   boardSizeSelector.addEventListener('change', function(){
-    size = this.selectedOptions[0].label;
-    refreshBoard(size);
+    size = this.value;
+    refreshBoard();
   });
   
-  refreshBoard(size);
+  refreshBoard();
   
 };
 window.addEventListener('load', createGame);
