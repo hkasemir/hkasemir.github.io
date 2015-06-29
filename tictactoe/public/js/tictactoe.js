@@ -43,6 +43,7 @@ function checkDirection(board, pos, dir){
     checkSum += 1;
     winningCells.push(pos);
     if (checkSum === IN_A_ROW_TO_WIN){
+      console.log(winningCells);
       return winningCells
     }
   }
@@ -95,8 +96,7 @@ function drawBoard(brd){
       bData.id = "r"+i+"c"+j;
       bData.setAttribute('data-row', i);
       bData.setAttribute('data-col', j);
-//      no longer needed with sockets emit event
-//      bData.addEventListener("click", makeMove);
+      bData.addEventListener("click", makeMove);
       bRow.appendChild(bData);
     }
 	gBoard.appendChild(bRow);
@@ -104,8 +104,8 @@ function drawBoard(brd){
 };
 
 
-function makeMove(id){
-  clickToBoard(id);
+function makeMove(event){
+  clickToBoard(event.target.id);
   checkWin(tttBoard);
 }
 
@@ -140,17 +140,16 @@ var createGame = function() {
   var boardSizeSelector = document.getElementById("boardsize");
   var size = boardSizeSelector.value;
   
-//  var refreshButton = document.getElementById('refresh');
-//  refreshButton.addEventListener('click', refreshBoard);
+  var refreshButton = document.getElementById('refresh');
+  refreshButton.addEventListener('click', refreshBoard);
   
   
-//  not necessary with socket emit event  
-//  boardSizeSelector.addEventListener('change', function(){
-//    size = this.selectedOptions[0].label;
-//    refreshBoard(size);
-//  });
+  boardSizeSelector.addEventListener('change', function(){
+    size = this.selectedOptions[0].label;
+    refreshBoard(size);
+  });
   
   refreshBoard(size);
   
 };
-//window.addEventListener('load', createGame);
+window.addEventListener('load', createGame);
