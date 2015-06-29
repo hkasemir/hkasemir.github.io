@@ -11,8 +11,6 @@ var DIRECTIONS = [
 function createBoard(size){    
   if(size == 3){
     IN_A_ROW_TO_WIN = 3;
-  } else if (size == 10){
-    IN_A_ROW_TO_WIN = 4;
   } else {
     IN_A_ROW_TO_WIN = 5;
   }
@@ -133,7 +131,9 @@ function refreshBoard(){
   gameboard.innerHTML = '';
   var boardSizeSelector = document.getElementById("boardsize");
   var size = boardSizeSelector.value;
+  var inARow = document.getElementById("in-a-row");
   tttBoard = createBoard(size);
+  inARow.textContent = IN_A_ROW_TO_WIN;
   drawBoard(tttBoard);
 }
 
@@ -148,6 +148,9 @@ var createGame = function() {
     size = this.value;
     refreshBoard();
   });
+  
+  var inARow = document.getElementById("in-a-row");
+  inARow.textContent = boardSizeSelector.value;
   
   refreshBoard();
   
