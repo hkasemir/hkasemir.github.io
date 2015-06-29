@@ -1,0 +1,48 @@
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="./styles/tttstyle.css"></link>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="./js/tictactoe.js"></script>
+  <script src="./js/app.js" type="text/javascript"></script>
+</head>
+
+<div id="game_area">
+  
+</div>
+<script id="initial_screen" type="text/template">
+
+<div>
+    <h1>Create a new Tic Tac Toe Game</h1>
+    <button id="start_button">Start Game</button>
+    <br />
+    <button id="join_game_button">Join Game</button>
+    <input id="join_game_in" type="text"/>
+</div>
+
+</script>
+
+
+<script id="game_screen" type="text/template">
+
+<div>
+    <h1 id="game_id"></h1>
+    <p id='opponent'>Waiting for other player...</p>
+ <div id='gamecontrols'>
+ <p>Game Board Size:</p>
+ <select name="size" id="boardsize">
+   <option value="3">3</option>
+   <option value="10">10</option>
+   <option value="20">20</option>
+ </select>
+ </div>
+ <div>
+   <h2 id='gamestatus'>WINNER!</h2>
+ </div>
+  <div id="gameboard">
+  </div>
+</div>
+
+</script>
+
