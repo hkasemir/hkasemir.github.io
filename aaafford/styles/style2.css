@@ -6,7 +6,7 @@
 
 body {
 	font-family: "Verdana", sans-serif;
-	background: grey;
+	background: white;
 }
 
 div {
@@ -76,7 +76,10 @@ footer p {
   text-align: center;
   padding: 2em;
   flex: 1;
-  min-width: 15em;
+  min-width: 16.4em;
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .col-4 a {
@@ -137,14 +140,13 @@ footer p {
 
 .row {
 	padding-bottom: 40px;
-	background-color: #9FCACF;
     display: flex;
     flex-wrap: wrap;
 }
 
 .map {
     background: black;
-    color: white;
+    color: #cccccc;
     
 }
 
@@ -183,8 +185,9 @@ footer p {
 
 #site-map a {
 	text-decoration: none;
-	width: 100%;
 	color: #4C7C91;
+    font-size: 14px;
+    padding: .75em 1em
 }
 
 #site-map ul {
@@ -197,6 +200,10 @@ footer p {
 	display: inline;
 	list-style: none;
 	border-right: solid #1A2F38 1px;
+}
+
+#site-map li:last-child {
+	border: none;
 }
 
 
