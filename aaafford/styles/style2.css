@@ -19,11 +19,12 @@ fieldset {
 footer {
 	width: 100%;
 	color: grey;
-	height: 170px;
+/*	height: 170px;*/
 	bottom: 0;
 	position: relative;
 	background-color: black;
 	font-size: 12px;
+    overflow: visible;
 }
 
 h2 {
@@ -45,8 +46,7 @@ form {
 }
 
 footer p {
-	padding-top: 40px;
-	margin-top: 0;
+	padding: 40px 10px;
 	text-align: center;
 }
 
@@ -56,7 +56,7 @@ footer p {
 }
 
 .accredit {
-	bottom: 5px;
+	bottom: 35px;
 	padding: 10px;
 	right: 20px;
 	position: absolute;
@@ -70,6 +70,9 @@ footer p {
   text-decoration: none;
   margin-top: 40px;
   border-radius: 10px;
+  max-width: 15em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .col-4 {
@@ -103,13 +106,12 @@ footer p {
 
 .main-menu a {
 	text-decoration: none;
-	color: #cccccc;
+	color: white;
     padding: 1.5em;
 }
 
 .main-menu li:hover {
 	transition: .35s background-color, .35s color;
-	color: white;
 	background-color: hsla(200, 100%, 10%, .5);
 }
 
@@ -156,10 +158,10 @@ footer p {
   background-size: cover;
   height: 400px;
   text-align: center;
+  padding: 4em 2em;
 }
 
 .splash h1 {
-  padding-top: 50px;
 }
 
 .splash a {
@@ -210,6 +212,50 @@ footer p {
 
 
 
-@media only screen and (max-device-width: 480px) {
+@media screen and (max-device-width: 800px) {
+    .row {
+        display: block;
+    }
+    
+    .col-4, .col-6 {
+        width: 100%;
+    }
+    
+    #site-map li {
+        display: block;
+        border: none;
+    }
+
+}
+
+
+@media screen and (max-device-width: 650px) {
+    #site-map ul {
+        text-align: left;
+    }
+    
+    footer p {
+        text-align: left;
+    }  
+    
+    .accredit {
+        position: relative;
+        right: 0;
+    }
+    
+    iframe {
+        height: 250px;
+    }
+
+    .main-menu li {
+        display: block;
+    }
+
+    .main-menu li:first-child, .main-menu li:last-child  {
+        display: block;
+        float: none;
+    }
+    
+    
 
 }
