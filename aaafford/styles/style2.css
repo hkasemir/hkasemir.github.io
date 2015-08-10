@@ -162,6 +162,7 @@ footer p {
 }
 
 .splash h1 {
+    text-shadow: 0 0 0.7em white;
 }
 
 .splash a {
