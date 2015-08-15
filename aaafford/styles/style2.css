@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+a {
+	color: rgba(50,150,250,1);
+}
+
 body {
 	font-family: "Verdana", sans-serif;
 	background: white;
@@ -96,6 +100,16 @@ footer p {
     padding: 3em;
 }
 
+.grey-filter {
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+}
+
 .login-form {
 	padding-top: 20px;
 	margin-top: 0;
@@ -152,17 +166,34 @@ footer p {
     
 }
 
+.support a, .support p, .support h2 {
+    z-index: 100;
+}
 
-.splash {
-  background: url("https://images.unsplash.com/photo-1433838552652-f9a46b332c40?q=80&fm=jpg&s=97cb7cd5e219e932365f3bcff3950eda") no-repeat center center;
+.support {
+  background: url("../images/front-angle-full.JPG") no-repeat center center;
   background-size: cover;
   height: 400px;
-  text-align: center;
-  padding: 4em 2em;
+  text-align: left;
+  padding: 4em 5em;
+    color: white;
+    text-shadow: 0 0 0.7em black;
+    z-index: 0;
+    position: relative;
+}
+
+
+.splash {
+  background: url("../images/master-lock-full.JPG") no-repeat center center;
+  background-size: cover;
+  height: 400px;
+  text-align: left;
+  padding: 4em 5em;
 }
 
 .splash h1 {
-    text-shadow: 0 0 0.7em white;
+    color: white;
+    text-shadow: 0 0 0.7em black;
 }
 
 .splash a {
@@ -213,7 +244,7 @@ footer p {
 
 
 
-@media screen and (max-device-width: 800px) {
+@media (max-width: 800px) {
     .row {
         display: block;
     }
@@ -230,7 +261,7 @@ footer p {
 }
 
 
-@media screen and (max-device-width: 650px) {
+@media (max-width: 650px) {
     #site-map ul {
         text-align: left;
     }
