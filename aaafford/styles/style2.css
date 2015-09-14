@@ -171,20 +171,20 @@ footer p {
 }
 
 .support {
-  background: url("../images/front-angle-full.JPG") no-repeat center center;
+  background: url("../images/front-angle-full-1200large.JPG") no-repeat center center;
   background-size: cover;
   height: 400px;
   text-align: left;
   padding: 4em 5em;
-    color: white;
-    text-shadow: 0 0 0.7em black;
-    z-index: 0;
-    position: relative;
+  color: white;
+  text-shadow: 0 0 0.7em black;
+  z-index: 0;
+  position: relative;
 }
 
 
 .splash {
-  background: url("../images/master-lock-full.JPG") no-repeat center center;
+  background: url("../images/master-lock-full-1200large.JPG") no-repeat center center;
   background-size: cover;
   height: 400px;
   text-align: left;
@@ -257,6 +257,14 @@ footer p {
         display: block;
         border: none;
     }
+    
+    .splash {
+        background: url("../images/master-lock-full-800med.JPG") no-repeat center center;
+    }
+    
+    .support {
+        background: url("../images/front-angle-full-800med.JPG") no-repeat center center;
+    }
 
 }
 
@@ -286,6 +294,14 @@ footer p {
     .main-menu li:first-child, .main-menu li:last-child  {
         display: block;
         float: none;
+    }
+    
+    .splash {
+        background: url("../images/master-lock-full-400sm.JPG") no-repeat center center;
+    }
+  
+    .support {
+        background: url("../images/front-angle-full-400sm.JPG") no-repeat center center;
     }
     
     
