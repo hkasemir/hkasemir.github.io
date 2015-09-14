@@ -298,10 +298,16 @@ footer p {
     
     .splash {
         background: url("../images/master-lock-full-400sm.JPG") no-repeat center center;
+        background-size: cover;
+    }
+    
+    .splash h1 {
+        font-size: 1.7em;
     }
   
     .support {
         background: url("../images/front-angle-full-400sm.JPG") no-repeat center center;
+        background-size: cover;
     }
     
     
