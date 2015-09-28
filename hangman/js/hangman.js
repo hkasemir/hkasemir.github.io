@@ -31,7 +31,7 @@
     el: 'html',
         
     events: {
-      'click button#refresh': 'fetchNewWord',
+      'click div#refresh': 'fetchNewWord',
       'keydown body': 'checkKey'
     },
     
@@ -52,6 +52,21 @@
       var displayText = [];
       var incorrect = [];
       var done = true;
+      var lose = false;
+      
+      for (var i=0; i<this.guessed.length; i++){
+        if (this.word.indexOf(this.guessed[i]) < 0){
+          incorrect.push(this.guessed[i]);
+        }
+      };
+      if (incorrect.length > svgParts.length){
+        return;
+      };
+      this.guessedDiv.text(incorrect.join(' '));
+      if (incorrect.length == svgParts.length){
+        this.guessedDiv.append(' - you lose, the word was ' + this.word);
+      };
+      this.drawSvg(incorrect);
       for (var i=0; i<this.word.length; i++){
         if (this.guessed.indexOf(this.word[i]) >= 0){
           displayText.push(this.word[i]);
@@ -60,22 +75,10 @@
           done = false;
         }
       };
-      
-      for (var i=0; i<this.guessed.length; i++){
-        if (this.word.indexOf(this.guessed[i]) < 0){
-          incorrect.push(this.guessed[i]);
-        }
-      };
       this.wordDiv.text(displayText.join(' '));
       if (done){
-        this.guessedDiv.text("WINNER!!");
+        this.guessedDiv.append(" - WINNER!!");
         return;
-      }
-      this.drawSvg(incorrect);
-      this.guessedDiv.text(incorrect.join(' '));
-      if (incorrect.length == svgParts.length){
-        console.log('LOSE!!!!');
-        this.guessedDiv.append(' - you lose, the word was ' + this.word);
       }
     },
     
@@ -91,11 +94,12 @@
     
     fetchNewWord: function(){
       $.ajax(randomWordBaseURL+$.param(randomWordParams)).done((res) => {
-         
-        console.log(res.word.toLowerCase());
-        this.model.set({ word: res.word.toLowerCase(),
-                 lettersGuessed: [] });
-        
+        if (res.word.indexOf('-') > 0){
+            this.fetchNewWord();
+        } else {
+          this.model.set({ word: res.word.toLowerCase(),
+                           lettersGuessed: [] });
+        };
       });
     },
     
@@ -140,7 +144,6 @@
         y2: 40
       }
     },
- //  '<circle cx="140" cy="50" r="10" 
    {
       type: 'circle',
       attrs: {
@@ -152,7 +155,6 @@
         r: 10,
       }
     },
-//  '<line x1="140" x2="140" y1="60" y2="100" stroke="black" fill="transparent" stroke-width="5"/>',
     {
       type: 'line',
       attrs: {
@@ -165,7 +167,6 @@
         y2: 100
       }
     },
-//  '<line x1="140" x2="130" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>',
     {
       type: 'line',
       attrs: {
@@ -178,7 +179,6 @@
         y2: 130
       }
     },
-//  '<line x1="140" x2="150" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>',
     {
       type: 'line',
       attrs: {
@@ -191,7 +191,6 @@
         y2: 130
       }
     },
-//  '<line x1="140" x2="130" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>',
     {
       type: 'line',
       attrs: {
@@ -204,7 +203,6 @@
         y2: 95
       }
     },
-//  '<line x1="140" x2="150" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>'
     {
       type: 'line',
       attrs: {
@@ -220,6 +218,5 @@
         
   ];
 
-//    ]
   
 })(this)
