@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient( to left top, grey, white) no-repeat center center;
+}
+
+nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav a {
+    text-decoration: none;
+    display: block;
+    padding: 2em 1.5em;
+    color: lightgrey;
+    transition: all .3s ease-in-out;
+
+}
+
+nav a:hover {
+    color: white;
+    background: rgba(0,0,0,.6);
+    transition: all .3s fade-in;
+    
+}
+
+nav li {
+    display: inline-block;
+}
+
+header {
+    background: linear-gradient(270deg, rgba(0,0,0,.9), rgba(0,0,0,.6));
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+
+.brand a {
+    color: black;
+    font-size: 2em;
+    font-family: cursive;
+    padding: 0.3em 2em 1em 1em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: radial-gradient(ellipse farthest-corner at 0px 0px , white, rgba(255,255,255,0) 71%)
+}
+
+.container {
+    height: 1200px;
+}
+
+.featured-image {
+    height: 480px;
+    background: url('../images/s_ghost_horses_2.jpg') no-repeat center center fixed;
+    background-size: cover;
+}

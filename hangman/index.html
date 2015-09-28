@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Hangman</title>
+  <meta name="description" content="play hangman with random words">
+  <meta name="author" content="Heidi Kasemir">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone-min.js"></script>
+
+  <script defer src="js/hangman.js"></script>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+<!--<input type="text" id="keypresses" display="hidden" autofocus >-->
+<div id="guessed-letters"></div>
+<svg id="hangman" version="1.1"
+     baseProfile="full"
+     width="200" height="200"
+     xmlns="http://www.w3.org/2000/svg">
+
+<!--
+  <line x1="10" x2="190" y1="180" y2="180" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="40" x2="40" y1="10" y2="180" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="40" x2="60" y1="30" y2="10" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="37.5" x2="142.5" y1="10" y2="10" stroke="black" fill="transparent" stroke-width="5"/>
+
+  <line x1="140" x2="140" y1="10" y2="40" stroke="black" fill="transparent" stroke-width="5"/>
+  <circle cx="140" cy="50" r="10" stroke="black" fill="transparent" stroke-width="5" />
+  <line x1="140" x2="140" y1="60" y2="100" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="140" x2="130" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="140" x2="150" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="140" x2="130" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>
+  <line x1="140" x2="150" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>
+-->
+
+  </svg>
+<div id="word"></div>
+<button id="refresh">refresh</button>
+
+</body>
+</html>
