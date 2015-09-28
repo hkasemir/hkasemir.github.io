@@ -1,17 +1,37 @@
+body {
+  font-family: 'Anonymous Pro', serif;
+}
+
 #word {
   text-align: center;
   font-size: 4em;
   text-transform: uppercase;
   margin-top: 1em;
   height: 1.2em;
+  transition: all 1s ease-in-out;
+  letter-spacing: .5em;
+}
+
+#word.victory {
+  letter-spacing: 0em;
+  color: #2E7326;
 }
 
 #guessed-letters {
   font-size: 2em;
   text-transform: uppercase;
   margin: 1em;
-  color: red;
   height: 1.5em;
+}
+
+.red {
+  color: #8A2F2E;
+  transition: all 1s ease-in-out;
+}
+
+.message {
+  text-transform: none;
+  color: black;
 }
 
 #hangman {
@@ -24,15 +44,16 @@
   width: 7em;
   text-align: center;
   padding: 1em;
-  background-color: teal;
+  background-color: #183B49;
   margin-top: 1em;
   margin-left: auto;
   margin-right: auto;
   color: white;
+  transition: all .5s ease-in-out;
 }
 
 #refresh:hover {
-  background-color: darkcyan;
+  background-color: #0B0F22;
   cursor: pointer;
-  
+  transition: all .5s ease-in-out;
 }
