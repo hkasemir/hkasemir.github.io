@@ -164,8 +164,8 @@
       if (incorrect.length == svgParts.length){
         this.wordDiv.addClass('red');
         this.guessedDiv.addClass('red');
-        this.guessedDiv.append('<span class="message"> - wrong, the word was "' +
-                               this.word + '"</span>');
+        this.guessedDiv.append('<p class="message">Wrong, the word was "' +
+                               this.word + '"</p>');
       };
       
       this.drawSvg(incorrect);
@@ -183,7 +183,8 @@
       
       if (done){
         this.wordDiv.addClass("victory");
-        this.guessedDiv.append(" - You win!!");
+
+        this.guessedDiv.append('<p class="message">You win!!</p>');
         return;
       }
     },
@@ -207,7 +208,6 @@
             this.fetchNewWord();
         } else {
           this.wordDiv.removeClass("victory");
-          this.guessedDiv.removeClass("red");
           this.wordDiv.removeClass("red");
 
           this.model.set({ word: res.word.toLowerCase(),

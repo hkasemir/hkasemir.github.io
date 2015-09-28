@@ -6,13 +6,13 @@ body {
   text-align: center;
   font-size: 4em;
   text-transform: uppercase;
-  margin-top: 1em;
+  margin-top: .4em;
   height: 1.2em;
   transition: all 1s ease-in-out;
   letter-spacing: .5em;
 }
 
-#word.victory {
+#word.victory, .victory {
   letter-spacing: 0em;
   color: #2E7326;
 }
@@ -21,11 +21,12 @@ body {
   font-size: 2em;
   text-transform: uppercase;
   margin: 1em;
-  height: 1.5em;
+  height: 3em;
+  text-align: center;
 }
 
 .red {
-  color: #8A2F2E;
+  color: #842424 ;
   transition: all 1s ease-in-out;
 }
 
