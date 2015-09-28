@@ -156,7 +156,6 @@
       
       if (incorrect.length > svgParts.length ||
           this.wordDiv.hasClass('victory')){
-        console.log('win or lose');
         return;
       };
       
@@ -210,7 +209,7 @@
         } else {
           this.wordDiv.removeClass("victory");
           this.wordDiv.removeClass("red");
-          console.log(res.word);
+//          console.log(res.word);
 
           this.model.set({ word: res.word.toLowerCase(),
                            lettersGuessed: [] });
