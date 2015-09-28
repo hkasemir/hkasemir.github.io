@@ -147,7 +147,6 @@
       var displayText = '';
       var incorrect = [];
       var done = true;
-      var lose = false;
       
       for (var i=0; i<this.guessed.length; i++){
         if (this.word.indexOf(this.guessed[i]) < 0){
@@ -155,7 +154,9 @@
         }
       };
       
-      if (incorrect.length > svgParts.length){
+      if (incorrect.length > svgParts.length ||
+          this.wordDiv.hasClass('victory')){
+        console.log('win or lose');
         return;
       };
       
@@ -209,6 +210,7 @@
         } else {
           this.wordDiv.removeClass("victory");
           this.wordDiv.removeClass("red");
+          console.log(res.word);
 
           this.model.set({ word: res.word.toLowerCase(),
                            lettersGuessed: [] });
@@ -218,12 +220,14 @@
     
     checkKey: function(evt){
       var guess = String.fromCharCode(evt.keyCode).toLowerCase();
-      
       if (/[a-z]/.test(guess) 
         && this.guessed.indexOf(guess) < 0
         && guess.length == 1){
           this.guessed.push(guess);
           this.render();
+      }
+      if (evt.keyCode == 13){
+          this.fetchNewWord();
       }
     }
   });
