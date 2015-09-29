@@ -179,7 +179,7 @@
         }
       };
       
-      this.wordDiv.text(displayText);
+      this.wordDiv.html('<p>' + displayText + '<p>');
       
       if (done){
         this.wordDiv.addClass("victory");

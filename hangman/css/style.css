@@ -1,8 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Anonymous Pro', serif;
 }
 
+#word p {
+  text-align: center;  
+}
+
 #word {
+  padding-left: .65em;
   text-align: center;
   font-size: 4em;
   text-transform: uppercase;
@@ -13,6 +24,7 @@ body {
 }
 
 #word.victory, .victory {
+  padding-left: 0;
   letter-spacing: 0em;
   color: #2E7326;
 }
@@ -57,4 +69,17 @@ body {
   background-color: #0B0F22;
   cursor: pointer;
   transition: all .5s ease-in-out;
+}
+
+footer {
+  text-align: center;
+  margin-top: 4em;
+  color: #777;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  margin-top: .5em;
 }
