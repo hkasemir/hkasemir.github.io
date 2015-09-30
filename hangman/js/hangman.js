@@ -142,6 +142,11 @@
     
     render: function(){
       
+      if (this.wordDiv.hasClass('red') ||
+          this.wordDiv.hasClass('victory')){
+        return;
+      };
+      
       this.word = this.model.get('word');
       this.guessed = this.model.get('lettersGuessed')
       var displayText = '';
@@ -152,11 +157,6 @@
         if (this.word.indexOf(this.guessed[i]) < 0){
           incorrect.push(this.guessed[i]);
         }
-      };
-      
-      if (incorrect.length > svgParts.length ||
-          this.wordDiv.hasClass('victory')){
-        return;
       };
       
       this.guessedDiv.text(incorrect.join(' '));
@@ -204,7 +204,8 @@
     fetchNewWord: function(){
       
       $.ajax(randomWordBaseURL+$.param(randomWordParams)).done((res) => {
-        if (res.word.indexOf('-') > 0){
+        if (res.word.search(/[^a-z]/) >= 0){
+          // effectively removes all capitalized words and those with punctuation.
             this.fetchNewWord();
         } else {
           this.wordDiv.removeClass("victory");
