@@ -7,8 +7,13 @@
     fetch(mozUrl + params(feedbackParams)).then(function(res){
       res.json().then(function(json){
         console.log(json);
-//        console.log(json.count);
-        showResults(json);
+        var data = getHappy(json.results);
+        console.log(data);
+        createD3Svg(data);
+//        showIt.textContent = localeObj.nowhere.happy + localeObj.nowhere.sad + 
+//          " responses came from nowhere, and " + 
+//          localeObj.nowhere.happy / ( localeObj.nowhere.sad + localeObj.nowhere.happy) * 100 +
+//          "% were happy.";
       })
     })
   })
@@ -21,9 +26,10 @@
 //    q: "",
 //    happy: 1,
 //    platforms: linux,
-    locales: "en-US",
+//    locales: "en-US",
 //    products: "",
 //    versions: "",
+    max: 10000,
     date_delta: "1d",
   }
   
@@ -35,8 +41,28 @@
     return queryString.slice(0, -1)
   }
   
-  function showResults(json){
-    showIt.textContent = json.count + ' ' + json.results[50].description;
+  function getHappy(results){
+    var locales = [], data = [];
+    results.forEach(function(res){
+      var place = res.locale;
+      if (!place) {
+        place = 'nowhere';
+      }
+      if (locales.indexOf(place) <= 0) {
+        locales.push(place);
+        data.push({
+          loc: place,
+          happy: 0,
+          sad: 0
+        })
+      }
+      if (res.happy){
+        data[locales.indexOf(place)].happy += 1;
+      } else {
+        data[locales.indexOf(place)].sad += 1;
+      }
+    })
+    return data;
   }
   
   
