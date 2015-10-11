@@ -29,7 +29,7 @@
 //    locales: "en-US",
 //    products: "",
 //    versions: "",
-    max: 10000,
+    max: 1000,
     date_delta: "1d",
   }
   
@@ -48,7 +48,7 @@
       if (!place) {
         place = 'nowhere';
       }
-      if (locales.indexOf(place) <= 0) {
+      if (locales.indexOf(place) < 0) {
         locales.push(place);
         data.push({
           loc: place,
