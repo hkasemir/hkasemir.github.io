@@ -7,9 +7,9 @@
     fetch(mozUrl + params(feedbackParams)).then(function(res){
       res.json().then(function(json){
         console.log(json);
-        var data = getHappy(json.results);
+        var data = getVersion(json.results);
         console.log(data);
-        createD3Svg(data);
+        versHappyBar(data);
 //        showIt.textContent = localeObj.nowhere.happy + localeObj.nowhere.sad + 
 //          " responses came from nowhere, and " + 
 //          localeObj.nowhere.happy / ( localeObj.nowhere.sad + localeObj.nowhere.happy) * 100 +
@@ -27,10 +27,10 @@
 //    happy: 1,
 //    platforms: linux,
 //    locales: "en-US",
-//    products: "",
+    products: "Firefox",
 //    versions: "",
-    max: 1000,
-    date_delta: "1d",
+    max: 10000,
+    date_delta: "10d",
   }
   
   function params(params){
@@ -60,6 +60,30 @@
         data[locales.indexOf(place)].happy += 1;
       } else {
         data[locales.indexOf(place)].sad += 1;
+      }
+    })
+    return data;
+  }
+  
+  function getVersion(results){
+    var locales = [], data = [];
+    results.forEach(function(res){
+      var vers = res.version;
+      if (!vers) {
+        vers = 'none';
+      }
+      if (locales.indexOf(vers) < 0) {
+        locales.push(vers);
+        data.push({
+          version: vers,
+          happy: 0,
+          sad: 0
+        })
+      }
+      if (res.happy){
+        data[locales.indexOf(vers)].happy += 1;
+      } else {
+        data[locales.indexOf(vers)].sad += 1;
       }
     })
     return data;
