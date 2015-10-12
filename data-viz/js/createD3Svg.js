@@ -71,8 +71,7 @@ function versHappyBar(data){
 
   var xAxis = d3.svg.axis()
       .scale(x)
-      .orient('bottom')
-      .ticks(5);
+      .orient('bottom');
   
   var yAxis = d3.svg.axis()
       .scale(y)
@@ -96,20 +95,28 @@ function versHappyBar(data){
   var rects = svg.selectAll('rect')
       .data(data)
       .enter();
+  var maxCount = d3.max(data, function(d){
+    return d.happy + d.sad;
+  })
   
   rects.append('rect')
       .attr('x', function(d,i){
     return x(d.version);
   })
       .attr('y', function(d,i){
-    return y(0) - y(d.happy / (d.happy + d.sad));
+    return y(0) - y(d.sad / (d.happy + d.sad));
   })
       .attr('height', function(d,i){
-    return y(d.happy / (d.happy + d.sad))
+    return y(d.sad / (d.happy + d.sad))
   })
       .attr('width', x.rangeBand())
+      .attr('fill', function(d){
+//    var opacity = 0.05 + 0.95 * (d.happy + d.sad) / maxCount
+    var hue = 180 + 95 * (d.happy + d.sad) / maxCount
+    return 'hsl(' + hue + ', 100%, 50%)';
+  })
       .on('mouseenter', function(d,i){
-    dataInfo.text(d.version);
+    dataInfo.text('Version: ' + d.version + ', Feedback quantity: ' + (d.sad + d.happy));
   })
       .on('mouseout', function(d,i){
     dataInfo.text('')
