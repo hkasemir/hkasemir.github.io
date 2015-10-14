@@ -1,19 +1,40 @@
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5em;
+}
+
 #fetch-button {
-  background: lightblue;
+  background: #4497C7;
+  color: white;
   width: 10em;
   text-align: center;
   padding: 1em;
   cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+#fetch-button:hover {
+  background: #2275a5;
+  transition: all 0.3s ease-in-out;
 }
 
 svg {
-  padding: 20px;
+  padding: 75px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #data-info {
   height: 1.5em;
+  text-align: center;
 }
 
 rect:hover {
-  fill: orange;
+  fill: #4497C7;
 }

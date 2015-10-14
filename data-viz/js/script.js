@@ -1,19 +1,18 @@
 (function(global){
   var getIt = document.getElementById("fetch-button");
   var showIt = document.getElementById("show-response");
+  var loading = '<img src="img/loading.gif" style="height:60px; margin-left:auto; margin-right:auto; display:block;">'
   
   getIt.addEventListener("click", function(){
-    console.log("fetching..." + params(feedbackParams));
+      showIt.innerHTML = loading;
+      console.log("fetching..." + params(feedbackParams));
     fetch(mozUrl + params(feedbackParams)).then(function(res){
       res.json().then(function(json){
         console.log(json);
         var data = getVersion(json.results);
+        showIt.innerHTML = '';
         console.log(data);
         versHappyBar(data);
-//        showIt.textContent = localeObj.nowhere.happy + localeObj.nowhere.sad + 
-//          " responses came from nowhere, and " + 
-//          localeObj.nowhere.happy / ( localeObj.nowhere.sad + localeObj.nowhere.happy) * 100 +
-//          "% were happy.";
       })
     })
   })
@@ -25,10 +24,11 @@
   var feedbackParams = {
 //    q: "",
 //    happy: 1,
-//    platforms: linux,
+//    platforms: "android,windows 7,windows 10,firefox os,windows xp,windows 8.1,os x",
+    platform: "linus",
 //    locales: "en-US",
     products: "Firefox",
-//    versions: "",
+    versions: "41.0.1,41.0,42.0,40.0.3,44.0a1,40.0,39.0,19.0,29.0,8.0",
     max: 10000,
     date_delta: "10d",
   }

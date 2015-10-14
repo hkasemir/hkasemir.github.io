@@ -1,13 +1,17 @@
+var width = 600;
+var height = 400;
+
 function locHappyScatter(data){
   
   var dataInfo = d3.select('#data-info');
 
-  var y = d3.scale.linear().domain([0,1]).range([400, 0]);
+  var y = d3.scale.linear().domain([0,1])
+      .range([height, 0]);
 
   var x = d3.scale.linear()
       .domain([-10, d3.max(data, function(d, i){
       return d.happy + d.sad;
-    })]).range([0,600]);
+    })]).range([0,width]);
 
   var xAxis = d3.svg.axis()
       .scale(x)
@@ -21,8 +25,8 @@ function locHappyScatter(data){
 
   var svg = d3.select('body')
       .append('svg')
-      .attr('width', 600)
-      .attr('height', 400);
+      .attr('width', width)
+      .attr('height', height);
   
   svg.append('g')
       .attr('class', 'y axis')
@@ -30,8 +34,23 @@ function locHappyScatter(data){
 
   svg.append('g')
       .attr('class', 'x axis')
-      .attr('transform', 'translate(0, ' + 400 + ')')
+      .attr('transform', 'translate(0, ' + height + ')')
       .call(xAxis);
+  
+  svg.append('text')
+      .attr('class', 'x label')
+      .attr('text-anchor', 'end')
+      .attr('x', width)
+      .attr('y', height - 6)
+      .text('Feedback Quantity')  
+  
+  svg.append('text')
+      .attr('class', 'y label')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 6)
+      .text('% Happy Feedback')
+  
   
   var points = svg.selectAll('circle')
       .data(data)
@@ -60,11 +79,16 @@ function locHappyScatter(data){
 function versHappyBar(data){
   
   var dataInfo = d3.select('#data-info');
+  
+  var maxCount = d3.max(data, function(d){
+    return d.happy + d.sad;
+  })
 
-  var y = d3.scale.linear().domain([0,1]).range([400, 0]);
+  var y = d3.scale.linear().domain([0, maxCount])
+      .range([height, 0]);
 
   var x = d3.scale.ordinal()
-      .rangeRoundBands([0,600])
+      .rangeRoundBands([0,width])
       .domain(data.sort(function(a, b){
       return d3.ascending(a.version, b.version);
     }).map(function(d){ return d.version }));
@@ -80,8 +104,8 @@ function versHappyBar(data){
 
   var svg = d3.select('body')
       .append('svg')
-      .attr('width', 600)
-      .attr('height', 400);
+      .attr('width', width)
+      .attr('height', height);
   
   svg.append('g')
       .attr('class', 'y axis')
@@ -89,34 +113,48 @@ function versHappyBar(data){
 
   svg.append('g')
       .attr('class', 'x axis')
-      .attr('transform', 'translate(0, ' + 400 + ')')
+      .attr('transform', 'translate(0, ' + height + ')')
       .call(xAxis);
+    
+  svg.append('text')
+      .attr('class', 'x label')
+      .attr('text-anchor', 'end')
+      .attr('x', width - 40)
+      .attr('y', height + 40)
+      .text('Firefox Version')  
+  
+  svg.append('text')
+      .attr('class', 'y label')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -60)
+      .attr('x', -40)
+      .text('Feedback Quantity')
+
   
   var rects = svg.selectAll('rect')
       .data(data)
       .enter();
-  var maxCount = d3.max(data, function(d){
-    return d.happy + d.sad;
-  })
   
   rects.append('rect')
       .attr('x', function(d,i){
     return x(d.version);
   })
       .attr('y', function(d,i){
-    return y(0) - y(d.sad / (d.happy + d.sad));
+    return y(d.happy + d.sad);
   })
       .attr('height', function(d,i){
-    return y(d.sad / (d.happy + d.sad))
+    return y(0) - y(d.happy + d.sad)
   })
       .attr('width', x.rangeBand())
       .attr('fill', function(d){
-//    var opacity = 0.05 + 0.95 * (d.happy + d.sad) / maxCount
-    var hue = 180 + 95 * (d.happy + d.sad) / maxCount
+    var hue = 180 * d.happy / (d.happy + d.sad);
     return 'hsl(' + hue + ', 100%, 50%)';
   })
       .on('mouseenter', function(d,i){
-    dataInfo.text('Version: ' + d.version + ', Feedback quantity: ' + (d.sad + d.happy));
+    dataInfo.text('Version: ' + d.version + 
+                  ', Feedback quantity: ' + (d.sad + d.happy) + 
+                  ', ' + Math.round(100 * d.happy / (d.happy + d.sad)) + '% Positive');
   })
       .on('mouseout', function(d,i){
     dataInfo.text('')
