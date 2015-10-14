@@ -25,7 +25,7 @@
 //    q: "",
 //    happy: 1,
 //    platforms: "android,windows 7,windows 10,firefox os,windows xp,windows 8.1,os x",
-    platform: "linus",
+    platform: "os x",
 //    locales: "en-US",
     products: "Firefox",
     versions: "41.0.1,41.0,42.0,40.0.3,44.0a1,40.0,39.0,19.0,29.0,8.0",
