@@ -63,6 +63,25 @@ header {
     top: 0;
 }
 
+video {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+footer {
+  margin-top: 2em;
+  text-align: center;
+  padding: 2.5em;
+  background: black;
+  font-size: .75em;
+  color: #999;
+}
+
+footer > a {
+  text-decoration: none;
+  color: #94CDDB;
+}
+
 a.gallery {
     display: block;
     padding: 1em;
@@ -73,6 +92,12 @@ a.gallery {
     text-decoration: none;
     margin-left: auto;
     margin-right: auto;
+    transition: all .3s ease-in-out;
+}
+
+a.gallery:hover {
+    background-color: #444;
+    transition: all .3s ease-in-out;
 }
 
 article#about, article#contact {
@@ -81,7 +106,6 @@ article#about, article#contact {
 
 div.about {
     display: flex;
-/*    margin: 1em;*/
 }
 
 div.about > div.profile {
@@ -94,6 +118,7 @@ div.profile > img {
 
 div.about > p {
     flex: 1;
+    padding-right: 1.5em;
 }
 
 li.brand a {
@@ -120,20 +145,23 @@ li.brand a:hover {
 
 .images {
     display: flex;
+    margin-bottom: 2em;
 }
 
 .feature-thumb {
-    margin: 1em;
+/*    margin: 10px;*/
     flex: 2.5;
+    margin-bottom: -4px;
 }
 
 .feature-thumb img{
     width: 100%;
+/*    padding: 10px 0;*/
 }
 
 .thumb {
-    width: 90%;
-    margin: 1em
+    width: 100%;
+/*    margin: 1em*/
 }
 
 .thumb-div {
@@ -141,5 +169,5 @@ li.brand a:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
+    padding-left: 10px;
 }
