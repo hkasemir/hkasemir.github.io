@@ -13,6 +13,8 @@
   };
   
   
+//  Backbone model. Includes attributes for letters guessed, wrong guesses, and the word.
+//  also includes a method to fetch a new word.
   
   var RandomWord = Backbone.Model.extend({
     
@@ -28,9 +30,9 @@
     
     fetchNewWord: function(){
     
-    // uses fat arrow to preserve `this` context!
+//     uses fat arrow to preserve `this` context!
       $.ajax(randomWordBaseURL+$.param(randomWordParams)).done((res) => {
-        // remove capitalized words and those with punctuation.
+//         remove capitalized words and those with punctuation.
         if (res.word.search(/[^a-z]/) >= 0){
             this.fetchNewWord();
         } else {
@@ -46,10 +48,8 @@
   });
   
   
-  // MainView will handle the keypresses and most of the game logic.
+//  MainView will handle the keypresses and most of the game logic.
 //  It will also render a loss or win.
-//  It has 2 child views, one that renders the SVG for the hangman,
-//  the other renders the word and letters guessed.
   
   var MainView = Backbone.View.extend({
     
@@ -66,6 +66,7 @@
     },
     
     resetWord: function(){
+//      cleans the view and game logic from previous round
       this.word = this.model.get('word');
       this.guessed = this.model.get('lettersGuessed');
       this.wrong = this.model.get('wrongGuesses');
@@ -74,11 +75,11 @@
     },
     
     checkKey: function(evt){
-      // fetch a new word by pressing 'enter'
+//       fetch a new word by pressing 'enter'
       if (evt.keyCode == 13){
           this.model.fetchNewWord();
       }
-      // Check if round is won or lost. If so, return without doing anything.
+//       Check if round is won or lost. If so, return without doing anything.
       if (this.wrong.length == svgParts.length){
         return
       }
@@ -87,7 +88,7 @@
         return
       }
       
-      // check if keypress is a letter:
+//       check if keypress is a letter:
       var guess = String.fromCharCode(evt.keyCode).toLowerCase();
       
       if (/[a-z]/.test(guess) 
@@ -95,22 +96,24 @@
         && guess.length == 1){
           this.guessed.push(guess);
         
-        // if the letter is not in the word,
-        // push it to the wrong guesses array:
+//         if the letter is not in the word,
+//         push it to the wrong guesses array:
         if(this.word.search(guess) < 0 ) {
           this.wrong.push(guess);
         };
-        // set variables in the model
+        
+//         set variables in the model
         this.model.set({
           lettersGuessed: this.guessed,
           wrongGuesses: this.wrong
         });
-        // for some reason this is not triggering a change event on the model, so manually trigger:
+//        for some reason resetting variables is not triggering a 
+//        change event on the model, so manually trigger:
         this.model.trigger('change:lettersGuessed');
 
       }
       
-//      render win or lose
+//      render win or loss
       if (this.wrong.length == svgParts.length) {
         this.renderLoss();
         return
@@ -135,17 +138,24 @@
     
   })
   
+  
+//  SVGView renders the hangman SVG based on the length of the 
+//  wrongGuesses array in the model.
+  
   var SVGView = Backbone.View.extend({
     
     initialize: function() {
       _.bindAll(this, 'render');
 
 //      When a guess is made, re-render the SVG per the wrong guesses array.
+//      Could be more efficient to only re-render when wrongGuesses is changed
       this.listenTo(this.model, 'change:lettersGuessed', this.render);
       this.svg = document.getElementById('hangman');
     },
     
     render: function(){
+//      Need to remove the svg parts first, otherwise appending makes a
+//      big, messy svg.
       while (this.svg.lastChild) {
         this.svg.removeChild(this.svg.lastChild);
       };
@@ -155,9 +165,11 @@
         this.svg.appendChild(newSvg);
       };
     },
-    
   })
   
+  
+//  WordView renders the word and the wrong guesses, checking to see if
+//  letters in the word have been guessed to reveal them.
   
   var WordView = Backbone.View.extend({
     
@@ -191,9 +203,10 @@
       
       this.wordDiv.text(displayText);
     },
-    
-
   });
+  
+  
+//  svgParts holds all the information for drawing the hangman SVG
   
   var svgParts = [
 
