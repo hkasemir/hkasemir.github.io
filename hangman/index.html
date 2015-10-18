@@ -23,32 +23,19 @@
 </head>
 
 <body>
+<div id="score"></div>
 <div id="guessed-letters" class='red'></div>
+<div id="results" class="message"></div>
+
 <svg id="hangman" version="1.1"
      baseProfile="full"
      width="200" height="200"
      xmlns="http://www.w3.org/2000/svg">
 
-<!--
-  <line x1="10" x2="190" y1="180" y2="180" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="40" x2="40" y1="10" y2="180" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="40" x2="60" y1="30" y2="10" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="37.5" x2="142.5" y1="10" y2="10" stroke="black" fill="transparent" stroke-width="5"/>
-
-  <line x1="140" x2="140" y1="10" y2="40" stroke="black" fill="transparent" stroke-width="5"/>
-  <circle cx="140" cy="50" r="10" stroke="black" fill="transparent" stroke-width="5" />
-  <line x1="140" x2="140" y1="60" y2="100" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="140" x2="130" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="140" x2="150" y1="97.5" y2="130" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="140" x2="130" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>
-  <line x1="140" x2="150" y1="70" y2="95" stroke="black" fill="transparent" stroke-width="5"/>
--->
-
   </svg>
 <div id="word"></div>
-<div id="refresh">New Word</div>
 <footer>
- <p>Start typing letters to play. Press `enter` or `return` for a new word.</p>
+ <p>Start typing letters to play. Press `enter` for a new word.</p>
   <p>Built by <a href="http://heidik.name/">Heidi</a> using <a href="http://backbonejs.org/">Backbone.js</a></p>
 </footer>
 

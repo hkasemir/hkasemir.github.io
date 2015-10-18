@@ -29,11 +29,11 @@ body {
   color: #2E7326;
 }
 
-#guessed-letters {
+#guessed-letters, .message {
   font-size: 2em;
   text-transform: uppercase;
   margin: 1em;
-  height: 3em;
+  height: 1em;
   text-align: center;
 }
 
@@ -44,31 +44,12 @@ body {
 
 .message {
   text-transform: none;
-  color: black;
 }
 
 #hangman {
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
-
-#refresh {
-  width: 7em;
-  text-align: center;
-  padding: 1em;
-  background-color: #183B49;
-  margin-top: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  color: white;
-  transition: all .5s ease-in-out;
-}
-
-#refresh:hover {
-  background-color: #0B0F22;
-  cursor: pointer;
-  transition: all .5s ease-in-out;
 }
 
 footer {
