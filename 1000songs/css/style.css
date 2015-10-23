@@ -3,6 +3,11 @@
   font-family: sans-serif;
 }
 
+body {
+  background: black;
+  
+}
+
 
 iframe {
   margin-left: auto;
@@ -29,6 +34,15 @@ section#slideshow {
   background: url("http://cache4.asset-cache.net/xt/551987659.jpg?v=1&g=fs1|0|CUL|87|659&s=1&b=RjI4") no-repeat center center fixed;
   background-size: cover;
   z-index: -1;
+  -webkit-filter: brightness(1);
+  filter: brightness(1);
+  transition: filter .3s ease-in-out;
+}
+
+section#slideshow.transition {
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+  transition: filter .3s ease-in-out;
 }
 
 div.interaction-bar {

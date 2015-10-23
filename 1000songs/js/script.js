@@ -1,12 +1,5 @@
 (function(global){
    
-  function params(params){
-    var queryString = "";
-    for ( var key in params ){
-      queryString += key + '=' + params[key] + '&';
-    }
-    return queryString.slice(0, -1)
-  }
   
   var pixabayBaseUrl = 'http://pixabay.com/api/?';
   var pixParams = {
@@ -14,24 +7,46 @@
     key: '359bac60518da09986f4',
 //    response_group: 'high_resolution',
     q: 'adventure',
+    image_type: 'photo',
     orientation: 'horizontal',
+    per_page: 200
   }
-  var search = document.getElementById('search');
-  var slideShow = document.getElementById('slideshow');
+  var search = $('#search');
+  var slideShow = $('#slideshow');
   
   
   function startShow(images){
-    console.log(images[0].webformatURL)
-    slideShow.style.background = 'url(' + images[5].webformatURL + ') no-repeat center center';
-    slideShow.style.backgroundSize = 'cover';
+    var oldImages = [];
+    var pixIndex = 0;
+    
+    function setImage(){
+      slideShow.fadeOut('slow', function(){
+        slideShow.css(
+          {'background': 'url(' + images[pixIndex].webformatURL + ') no-repeat center center',
+        'background-size': 'cover'});
+        setTimeout(function(){
+          slideShow.fadeIn()
+        }, 500);
+      });
+    };
+    
+    setImage();
+    setInterval(function(){
+      pixIndex++;
+      setImage();
+      if(!images[pixIndex + 1]){
+        pixIndex = 0;
+      }
+    }, 10000);
   }
   
   
-  search.addEventListener('keydown', function(e){
+  search.on('keydown', function(e){
     if (e.keyCode == 13 && e.target.value){
       
       console.log('submitted: ' + e.target.value);
-      fetch(pixabayBaseUrl + params(pixParams))
+      pixParams.q = e.target.value;
+      fetch(pixabayBaseUrl + $.param(pixParams))
         .then(function(res){
         res.json()
           .then(function(json){
