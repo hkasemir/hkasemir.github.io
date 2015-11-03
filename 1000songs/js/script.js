@@ -8,7 +8,7 @@
     q: 'landscape',
     image_type: 'photo',
     orientation: 'horizontal',
-    per_page: 200
+    per_page: 5
   }
   
   var ImageModel = Backbone.Model.extend({
@@ -22,7 +22,6 @@
     },
     
     getImages: function(){
-//      console.log('getting images for: ' + this.get('image_q'));
       pixParams.q = this.get('image_q');
       fetch(pixabayBaseUrl + $.param(pixParams))
         .then((res) => {
@@ -44,70 +43,94 @@
     el: 'section#slideshow',
     
     initialize: function(){
-      this.slideshow = $('#slideshow');
+      this.slide = $('#slide');
+      this.buffer = $('#buffer-img');
       this.listenTo(this.model, 'change:image_arr', this.startShow);
-      $('.back').fadeOut(0);
+    },
+    
+    events: {
+      'click div.next': 'switchImages',
+      'click div.last': 'goBack',
+      'click div.pause': 'stopShow',
+      'click div.resume': 'resumeShow'
     },
     
     startShow: function(){
       if(this.currentShow){
-        this.stopShow(this.currentShow);
+        this.stopShow();
+      };
+      
+      var imgLoadHandler = () => {
+        this.switchImages();
+        this.buffer.off('load', imgLoadHandler);
       }
-//      console.log('show started');
-      var images = this.model.get('image_arr');
-      var pixIndex = 0;
-      $('.back').css(
-//          {'background': 'url(' + images[pixIndex].webformatURL + ') no-repeat center center',
-          {'background': 'url(' + images[pixIndex].imageURL + ') no-repeat center center',
-        'background-size': 'cover'});
-      pixIndex++;
-      this.switchImages(images, pixIndex);
+      
+      this.images = this.model.get('image_arr');
+      this.pixIndex = 0;
+      this.buffer.on('error', () =>  {
+        console.log('image loading error');
+        this.pixIndex++;
+        this.buffer.attr('src', this.images[this.pixIndex].imageURL);
+      })
+      
+      this.buffer.on('load', imgLoadHandler)
+        
+      this.buffer.attr('src', this.images[this.pixIndex].imageURL);
       this.currentShow = setInterval(() => {
-        pixIndex++;
-        this.switchImages(images, pixIndex);
-        if(!images[pixIndex + 1]){
-          pixIndex = 0;
-        }
-      }, 15000);
+        this.switchImages();
+      }, 10000);
     },
     
-    stopShow: function(interval){
-      clearInterval(interval)
+    stopShow: function(){
+      console.log('stopping show');
+      var pauseButton = $('.pause');
+      pauseButton.removeClass('pause').addClass('resume').text('resume');
+      clearInterval(this.currentShow);
     },
     
-    switchImages: function(images, pixIndex){
-      var from = $('.front'),
-          to   = $('.back');
-      from.addClass('back').removeClass('front');
-      to.addClass('front').removeClass('back');
-      from.fadeOut('slow', function(){
-//      console.log(to);
-//      console.log(from);
-//      console.log('from gets pixindex of: ' + pixIndex);
-        from.css(
-//          {'background': 'url(' + images[pixIndex].webformatURL + ') no-repeat center center',
-          {'background': 'url(' + images[pixIndex].imageURL + ') no-repeat center center',
+    switchImages: function(){
+      this.slide.css(
+          {'background': 'url(' + this.buffer.attr('src') + ') no-repeat center center',
         'background-size': 'cover'});
-          
-        setTimeout(function(){
-          to.fadeIn('slow');
-        }, 500);
-      });
+      this.pixIndex++;
+      this.buffer.attr('src', this.images[this.pixIndex].imageURL);
+      console.log('buffering: ' + this.images[this.pixIndex].imageWidth)
+      if(!this.images[this.pixIndex + 1]){
+        this.pixIndex = -1;
+      }
+    },
+    
+    goBack: function(){
+      this.pixIndex == 0 ?
+        this.pixIndex = this.images.length - 2 :
+        this.pixIndex -= 2;
+      this.switchImages();
+    }, 
+    
+    resumeShow: function(){
+      var resumeButton = $('.resume');
+      resumeButton.removeClass('resume').addClass('pause').text('pause');
+      
+      this.switchImages();
+      
+      this.currentShow = setInterval(() => {
+        this.switchImages();
+      }, 10000);
     }
     
     
   });
   
-  var SearchView = Backbone.View.extend({
+  var ControlView = Backbone.View.extend({
     
-    el: 'html',
+    el: 'section#control-bar',
 
     initialize: function(){
       this.search = $('#search');
     },
     
     events: {
-      'keydown #search': 'submitQ'
+      'keydown #search': 'submitQ',
     },
     
     submitQ: function(e){
@@ -121,7 +144,7 @@
   });
       
   var model1 = new ImageModel();
-  var search = new SearchView({model: model1});
+  var search = new ControlView({model: model1});
   var show = new ImageView({model: model1});
   
   

@@ -33,19 +33,52 @@ section#slideshow {
   bottom: 80px;
 }
 
-div#slide1, div#slide2 {
-  height: 100%;
+div#slide {
   width: 100%;
-  background: url("https://pixabay.com/get/44ce3f45b367f142abb5/1445810211/47d41ebe077d84ec.jpg") no-repeat center center fixed;
+  height: 100%;
+  background: url('../assets/dawn-190055_1280.jpg') no-repeat center center;
   background-size: cover;
 }
 
-div.interaction-bar {
+img#buffer-img {
+  display: none;
+}
+
+section#control-bar {
   display: flex;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+div#slide-controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+div#slide-controls > div {
+  color: #777;
+  background: rgba(0,0,0,0.40);
+  padding: 1em;
+  text-align: center;
+  cursor: pointer;
+  width: 6em;
+  transition: all 0.3s ease-in-out;
+  border-right: 1px solid #333;
+}
+
+div#slide-controls > div:hover {
+  color: #ccc;
+  background: rgba(0,0,0,0.70);
+  transition: all 0.3s ease-in-out;
+}
+
+div#slide-controls > div:last-child {
+  border-right: none;
 }
 
 img#pix-logo {
@@ -58,9 +91,11 @@ img#pix-logo {
 
 a.cc {
   display: flex;
+  position: absolute;
   align-items: center;
   text-decoration: none;
   color: white;
-  justify-content: flex-end;
   font-size: .75em;
+  top: 0;
+  left: 20px;
 }
