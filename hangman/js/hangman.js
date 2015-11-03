@@ -313,7 +313,7 @@
     return el;
   };
   
-  var wordModel = new RandomWord()
+  var wordModel = new RandomWord();
   var mainView = new MainView({model: wordModel});
   var svgView = new SVGView({model: wordModel});
   var wordView = new WordView({model: wordModel});
