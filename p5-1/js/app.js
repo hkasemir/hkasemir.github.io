@@ -21,13 +21,6 @@ var locations = [{
   title: 'The CU Engineering Center'
 }];
 
-locations.forEach((loc)=>{
-//  var url = 'https://api.yelp.com/v2/search?term=' + loc.title + '&location=Boulder,+Colorado';
-  var url = 'https://api.yelp.com/v2/search/?term=donuts&location=boulder?oauth_consumer_key=4NSfQz0B0AcatVl7p2CVQA&oauth_nonce=414253690&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1453243884&oauth_token=QTEdTYBzg1dlfzUstVI6dFk4XJs&oauth_signature=7hjqTrru27Nr52PiDCdLUxENvhE%3D';
-  fetch(url).then((res)=>{
-    console.log(res);
-  })
-})
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -57,9 +50,66 @@ function initMap() {
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
+        
+        yelpFetch(loc.title, 'Boulder')
 
     })});
   });
-}
+};
 
+//******************* OAuth Fun *****************
+//***********************************************
+// From this very helpful gist : https://gist.github.com/kennygfunk/c24c8a2ea71c9ce7f4fc
 
+function yelpFetch(term, location){
+
+  var auth = {
+    consumerKey : "4NSfQz0B0AcatVl7p2CVQA",
+    consumerSecret : "oGXlKX8vymwdBBx6khM8kij6G-U",
+    accessToken : "QTEdTYBzg1dlfzUstVI6dFk4XJs",
+    // This example is a proof of concept, for how to use the Yelp v2 API with javascript.
+    // You wouldn't actually want to expose your access token secret like this in a real application.
+    accessTokenSecret : "bku8a5nlw5zSPs_sUdeNlF3ou8M",
+    serviceProvider : {
+      signatureMethod : "HMAC-SHA1"
+    }
+  };
+
+  var accessor = {
+    consumerSecret : auth.consumerSecret,
+    tokenSecret : auth.accessTokenSecret
+  };
+
+  var parameters = [];
+  parameters.push(['term', term]);
+  parameters.push(['location', location]);
+  parameters.push(['callback', 'cb']);
+  parameters.push(['oauth_consumer_key', auth.consumerKey]);
+  parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
+  parameters.push(['oauth_token', auth.accessToken]);
+  parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+  
+  var message = {
+    'action' : 'http://api.yelp.com/v2/search',
+    'method' : 'GET',
+    'parameters' : parameters
+  };
+  OAuth.setTimestampAndNonce(message);
+  OAuth.SignatureMethod.sign(message, accessor);
+  
+  var parameterMap = OAuth.getParameterMap(message.parameters);
+  parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
+  console.log(parameterMap);
+  
+        $.ajax({
+        'url' : message.action,
+        'data' : parameterMap,
+        'cache' : true,
+        'dataType' : 'jsonp',
+        'jsonpCallback' : 'cb',
+        'success' : function(data, textStats, XMLHttpRequest) {
+          console.log(data);
+        }
+      });
+  
+};
