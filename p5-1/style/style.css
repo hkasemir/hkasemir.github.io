@@ -21,9 +21,14 @@ aside#place-list {
   width: 15em;
 }
 
+aside>h1 {
+  margin: .3em;
+  text-align: center;
+}
+
 input {
-  width: 14.5em;
-  margin: 1em;
+  width: 90%;
+  margin: 5%;
 }
 
 ul {
@@ -37,12 +42,22 @@ li {
   cursor: pointer;
 }
 
+li:hover {
+  background: #20605F;
+}
+
 li.selected {
   background: black;
 }
 
 li.filtered {
   display: none;
+}
+
+p.wait-message {
+  text-align: center;
+  color: #eee;
+  margin-top: 12em;
 }
 
 div.info-window {
@@ -59,4 +74,23 @@ div.info-window img {
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 1em;
+}
+
+@media (max-width: 500px){
+  body {
+    display: block;
+  }
+  
+  div#map {
+    height: 80%;
+  }
+  
+  aside#place-list {
+    width: 100%;
+  }
+  
+  ul {
+    text-align: center;
+  }
+  
 }

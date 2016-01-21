@@ -24,19 +24,11 @@ var locs = [{
   latlng: {lat: 40.0071656, lng: -105.2627072}
 }];
 
-function toggleBounce(marker) {
-  if (marker.getAnimation() !== null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  }
-};
-
 var Location = function(data) {
   this.address = data.address;
   this.title = data.title;
-  // markers are assigned later
   this.latlng = data.latlng;
+  // markers are assigned later
   this.marker = null;
   this.selected = ko.observable(false);
   this.filtered = ko.observable(false);
@@ -54,7 +46,6 @@ var MapViewModel = function() {
   })
   
   self.addLocationMarkers = () => {
-    // first get the geolocation from the address to place markers:
     self.locations().forEach((loc) => {
       loc.map = self.map;
 
@@ -113,18 +104,33 @@ var MapViewModel = function() {
     var parameterMap = OAuth.getParameterMap(message.parameters);
     parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
 
-    $.ajax({
+    var call = $.ajax({
       'url' : message.action,
       'data' : parameterMap,
       'cache' : true,
       'dataType' : 'jsonp',
+      'timeout' : 2000,
       'success' : function(data) {
         self.buildInfoWindow(data, loc);
-    }
+    },
+      'error' : function(jqXHR, textStatus, errorThrown) {
+        self.buildInfoWindow(textStatus, loc)
+      }
     });
   };
   
   self.buildInfoWindow = (data, loc) => {
+    if (typeof data == 'string'){
+      loc.infowindow = new google.maps.InfoWindow({
+        content: 'Sorry, Yelp data about ' + loc.title.toLowerCase() +
+        ' could not be loaded'
+      });
+    
+      loc.infowindow.addListener('closeclick', function() {
+        self.selectPlace(loc);
+      });
+      return
+    }
     var infoHtml = '<div class="info-window"><h2>' +
         loc.title + '</h2><img src="' + data.businesses[0].snippet_image_url +
         '"><p>' + data.businesses[0].snippet_text +
@@ -135,7 +141,7 @@ var MapViewModel = function() {
     });
     
     loc.infowindow.addListener('closeclick', function() {
-      self.selectPlace(loc)
+      self.selectPlace(loc);
     });
 
   };
@@ -152,12 +158,13 @@ var MapViewModel = function() {
     }
     if (loc.selected()) {
       loc.selected(false);
-      loc.infowindow.close()
+      loc.infowindow.close();
+      loc.marker.setAnimation(null);
     } else {
       loc.selected(true);
-      loc.infowindow.open(loc.map, loc.marker)
+      loc.infowindow.open(loc.map, loc.marker);
+      loc.marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-    toggleBounce(loc.marker);
   };
   
   self.query = ko.observable('');

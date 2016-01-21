@@ -14,8 +14,13 @@
   <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsIxyp26qrvKMLtczkfivJkFCfaiWgKqI&callback=initMap"></script>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="map">
+   <p class="wait-message">
+    Attempting to Load Google Maps ...
+    </p>
+  </div>
   <aside id="place-list">
+  <h1>My Favorite Places in Boulder</h1>
    <input type="search" placeholder="filter" data-bind="value: query, valueUpdate: 'keyup'">
     <ul data-bind="foreach: locations">
       <li data-bind="text: title, click: $parent.selectPlace, css: { selected: selected, filtered: filtered }"></li>
