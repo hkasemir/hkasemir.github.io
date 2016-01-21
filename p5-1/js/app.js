@@ -19,6 +19,8 @@ var locs = [{
   title: 'The CU Engineering Center'
 }];
 
+var markers = [];
+
 var Location = function(data) {
   this.address = data.address;
   this.title = data.title;
@@ -28,32 +30,34 @@ var Location = function(data) {
 }
 
 var MapViewModel = function() {
-  this.map = null;
-  this.center = {lat: 40.02, lng: -105.27};
-  this.city = 'Boulder';
-  this.locations = ko.observableArray([]);
+  var self = this;
+  self.map = null;
+  self.center = {lat: 40.02, lng: -105.27};
+  self.city = 'Boulder';
+  self.locations = ko.observableArray([]);
+  self.markers = ko.observableArray([]);
   
   locs.forEach((loc) => {
-    this.locations().push( new Location(loc));
+    self.locations().push( new Location(loc));
   })
   
-  this.addLocationMarkers = () => {
+  self.addLocationMarkers = () => {
     // first get the geolocation from the address to place markers:
-    this.locations().forEach((loc) => {
+    self.locations().forEach((loc) => {
       var latlng;
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + loc.address;
       fetch(url).then((response)=>{
         response.json().then((json)=>{
           loc.latlng = json.results[0].geometry.location;
-          loc.map = this.map;
+          loc.map = self.map;
           
           //Then get Yelp data - this calls a build infowindow function as a success callback
-          this.fetchYelp(loc);
+          self.fetchYelp(loc);
         })});
     });
   };
   
-  this.fetchYelp = (loc) => {
+  self.fetchYelp = (loc) => {
     // From this very helpful gist : https://gist.github.com/kennygfunk/c24c8a2ea71c9ce7f4fc
     var auth = {
       consumerKey : "4NSfQz0B0AcatVl7p2CVQA",
@@ -74,7 +78,7 @@ var MapViewModel = function() {
 
     var parameters = [];
     parameters.push(['term', loc.title]);
-    parameters.push(['location', this.city]);
+    parameters.push(['location', self.city]);
     parameters.push(['callback', 'cb']);
     parameters.push(['oauth_consumer_key', auth.consumerKey]);
     parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
@@ -98,12 +102,12 @@ var MapViewModel = function() {
       'cache' : true,
       'dataType' : 'jsonp',
       'success' : function(data) {
-        buildInfoWindow(data, loc);
+        self.buildInfoWindow(data, loc);
     }
     });
   };
   
-  this.buildInfoWindow = (data, loc) => {
+  self.buildInfoWindow = (data, loc) => {
     var infoHtml = '<div class="info-window"><h2>' +
         loc.title + '</h2><img src="' + data.businesses[0].snippet_image_url +
         '"><p>' + data.businesses[0].snippet_text +
@@ -119,21 +123,46 @@ var MapViewModel = function() {
     });
     marker.setMap(loc.map);
 
-
-      marker.addListener('click', function() {
-        infowindow.open(loc.map, marker);
-      });
+    marker.addListener('click', function() {
+      infowindow.open(loc.map, marker);
+    });
+    
+    self.markers().push(marker);
+  };
+  
+  self.query = ko.observable('');
+  
+  self.filter = (value) => {
+    // from this helpful post: http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
+    
+    // first remove markers and items from map
+    for (var i in self.markers()){
+      console.log(self.markers()[i].title)
+      self.markers()[i].setMap(null);
+    }
+    self.locations.removeAll();
+    
+    // if they match search terms, add them back in
+    
+    for (var i in locs) {
+      if (locs[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        self.locations.push(new Location(locs[i]));
+      }
+      if (self.markers()[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        self.markers()[i].setMap(self.map);
+      }
+    }
+    
+    console.log('hi ' + value);
   }
 }
 
-var ListView = function() {
-  
-}
 
-
+var MapView = new MapViewModel();
+MapView.query.subscribe(MapView.filter)
+ko.applyBindings(MapView);
 
 function initMap() {
-  var MapView = new MapViewModel();
   MapView.map = new google.maps.Map(document.getElementById('map'), {
     center: MapView.center,
     zoom: 14
@@ -142,4 +171,3 @@ function initMap() {
   MapView.addLocationMarkers();
 };
 
-ko.applyBindings(MapViewModel);
