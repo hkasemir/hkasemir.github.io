@@ -1,32 +1,45 @@
 var locs = [{
   address: "3240 Prairie Avenue, Boulder, CO 80301",
-  title: 'The Spot Bouldering Gym'
+  title: 'The Spot Bouldering Gym',
+  latlng: {lat: 40.0215272, lng: -105.2505871}
 },
 {
   address: "825 Walnut Street, Boulder CO, 80302",
-  title: 'Sherpa\'s Restaurant'
+  title: 'Sherpa\'s Restaurant',
+  latlng: {lat: 40.0161644, lng: -105.2844167}
 },
 {
   address: "1117 Pearl Street, Boulder, CO 80302",
-  title: 'Hapa Sushi'
+  title: 'Hapa Sushi',
+  latlng: {lat: 40.018009, lng: -105.2505871}
 },
 {
   address: "40.014290, -105.282472",
-  title: 'Boulder Creek'
+  title: 'Boulder Creek',
+  latlng: {lat: 40.0145327, lng: -105.2821675}
 },
 {
   address: "1111 Engineering Dr, Boulder, CO 80309",
-  title: 'The CU Engineering Center'
+  title: 'The CU Engineering Center',
+  latlng: {lat: 40.0071656, lng: -105.2627072}
 }];
 
-var markers = [];
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+};
 
 var Location = function(data) {
   this.address = data.address;
   this.title = data.title;
-  // latLng and map are calculated or assigned later
-  this.latlng = null;
-  this.map = null;
+  // markers are assigned later
+  this.latlng = data.latlng;
+  this.marker = null;
+  this.selected = ko.observable(false);
+  this.filtered = ko.observable(false);
 }
 
 var MapViewModel = function() {
@@ -35,7 +48,6 @@ var MapViewModel = function() {
   self.center = {lat: 40.02, lng: -105.27};
   self.city = 'Boulder';
   self.locations = ko.observableArray([]);
-  self.markers = ko.observableArray([]);
   
   locs.forEach((loc) => {
     self.locations().push( new Location(loc));
@@ -44,16 +56,21 @@ var MapViewModel = function() {
   self.addLocationMarkers = () => {
     // first get the geolocation from the address to place markers:
     self.locations().forEach((loc) => {
-      var latlng;
-      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + loc.address;
-      fetch(url).then((response)=>{
-        response.json().then((json)=>{
-          loc.latlng = json.results[0].geometry.location;
-          loc.map = self.map;
-          
-          //Then get Yelp data - this calls a build infowindow function as a success callback
-          self.fetchYelp(loc);
-        })});
+      loc.map = self.map;
+
+      loc.marker = new google.maps.Marker({
+        position: loc.latlng,
+        animation: google.maps.Animation.DROP,
+        title: loc.title
+      });
+      loc.marker.setMap(loc.map);
+
+      loc.marker.addListener('click', function() {
+        self.selectPlace(loc);
+      });
+      
+      //Then get Yelp data - this calls a build infowindow function as a success callback
+      self.fetchYelp(loc);
     });
   };
   
@@ -113,47 +130,52 @@ var MapViewModel = function() {
         '"><p>' + data.businesses[0].snippet_text +
         '<a href="' + data.businesses[0].url + '"> -> Read More</a></p></div>'
     
-    var infowindow = new google.maps.InfoWindow({
+    loc.infowindow = new google.maps.InfoWindow({
       content: infoHtml
     });
-    var marker = new google.maps.Marker({
-      position: loc.latlng,
-      animation: google.maps.Animation.DROP,
-      title: loc.title
-    });
-    marker.setMap(loc.map);
-
-    marker.addListener('click', function() {
-      infowindow.open(loc.map, marker);
-    });
     
-    self.markers().push(marker);
+    loc.infowindow.addListener('closeclick', function() {
+      self.selectPlace(loc)
+    });
+
+  };
+  
+  self.selectPlace = (loc) => {
+//    first, deselect other places
+    for (var i in self.locations()){
+      if (self.locations()[i] != loc &&
+          self.locations()[i].selected) {
+        self.locations()[i].selected(false);
+        self.locations()[i].infowindow.close();
+        self.locations()[i].marker.setAnimation(null);
+      }
+    }
+    if (loc.selected()) {
+      loc.selected(false);
+      loc.infowindow.close()
+    } else {
+      loc.selected(true);
+      loc.infowindow.open(loc.map, loc.marker)
+    }
+    toggleBounce(loc.marker);
   };
   
   self.query = ko.observable('');
   
   self.filter = (value) => {
-    // from this helpful post: http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
-    
-    // first remove markers and items from map
-    for (var i in self.markers()){
-      console.log(self.markers()[i].title)
-      self.markers()[i].setMap(null);
-    }
-    self.locations.removeAll();
+    // modified from this helpful post: http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
     
     // if they match search terms, add them back in
     
     for (var i in locs) {
       if (locs[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-        self.locations.push(new Location(locs[i]));
-      }
-      if (self.markers()[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-        self.markers()[i].setMap(self.map);
+        self.locations()[i].filtered(false);
+        self.locations()[i].marker.setMap(self.map);
+      } else {
+        self.locations()[i].filtered(true);
+        self.locations()[i].marker.setMap(null);
       }
     }
-    
-    console.log('hi ' + value);
   }
 }
 

@@ -15,12 +15,12 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="place-list">
+  <aside id="place-list">
    <input type="search" placeholder="filter" data-bind="value: query, valueUpdate: 'keyup'">
     <ul data-bind="foreach: locations">
-      <li data-bind="text: title, click: $parent.filter"></li>
+      <li data-bind="text: title, click: $parent.selectPlace, css: { selected: selected, filtered: filtered }"></li>
     </ul>
-  </div>
+  </aside>
 </body>
 
 

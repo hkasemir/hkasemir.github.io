@@ -1,11 +1,12 @@
 * {
   margin: 0;
-  padidng: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 body, html {
-  background: grey;
+  background: #2B8279;
   height: 100%;
   width: 100%;
   display: flex;
@@ -14,6 +15,34 @@ body, html {
 #map {
   height: 100%;
   width: 100%;
+}
+
+aside#place-list {
+  width: 15em;
+}
+
+input {
+  width: 14.5em;
+  margin: 1em;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  color: #ddd;
+  padding: 1em;
+  border-bottom: 1px solid #999;
+  cursor: pointer;
+}
+
+li.selected {
+  background: black;
+}
+
+li.filtered {
+  display: none;
 }
 
 div.info-window {
