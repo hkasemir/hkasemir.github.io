@@ -1,3 +1,5 @@
 aaafford/images_src/*
 aaafford/node_modules/*
 1000songs/js/settings.json
+*/**/node_modules/*
+
