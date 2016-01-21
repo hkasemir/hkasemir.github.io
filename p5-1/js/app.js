@@ -1,3 +1,6 @@
+// basic data that will be loaded up on the map
+// 5 locations in Boulder, CO that I liked in college
+
 var locs = [{
   address: "3240 Prairie Avenue, Boulder, CO 80301",
   title: 'The Spot Bouldering Gym',
@@ -109,6 +112,7 @@ var MapViewModel = function() {
       'data' : parameterMap,
       'cache' : true,
       'dataType' : 'jsonp',
+//      using timeout to force error handling - may need to tweak this for mobile use.
       'timeout' : 2000,
       'success' : function(data) {
         self.buildInfoWindow(data, loc);
@@ -120,6 +124,7 @@ var MapViewModel = function() {
   };
   
   self.buildInfoWindow = (data, loc) => {
+//    check to see if data indicates there was an error loading.
     if (typeof data == 'string'){
       loc.infowindow = new google.maps.InfoWindow({
         content: 'Sorry, Yelp data about ' + loc.title.toLowerCase() +
@@ -131,6 +136,8 @@ var MapViewModel = function() {
       });
       return
     }
+    
+//    if there were no errors:
     var infoHtml = '<div class="info-window"><h2>' +
         loc.title + '</h2><img src="' + data.businesses[0].snippet_image_url +
         '"><p>' + data.businesses[0].snippet_text +
